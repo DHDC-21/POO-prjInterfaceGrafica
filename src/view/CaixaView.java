@@ -1,18 +1,25 @@
 package view;
 
 // biblicd oteca da interface grafica
+import model.Caixa;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 
 // transformando a classe em um  JFrame
-public class CaixaView extends JFrame {
+public class CaixaView extends JFrame implements WindowListener, ActionListener {
     // definindo os atributos
     private Dimension dLabel, dTextField, dTextArea, dFrame, dButtom;
     private Label lblValor, lblSaldo;
     private TextField txtValor, txtSaldo;
     private Button cmdEntrada, cmdRetirada, cmdSaldo, cmdSaida;
     private TextArea txtMsg;
+    private Caixa caixa = new Caixa();
 
     // metodo contrutor
     public CaixaView(){
@@ -94,5 +101,94 @@ public class CaixaView extends JFrame {
         txtMsg.setSize(dTextArea);
         txtMsg.setLocation(25,220);
         this.add(txtMsg);
+
+        this.addWindowListener(this);
+        cmdEntrada.addActionListener(this);
+        cmdRetirada.addActionListener(this);
+        cmdSaldo.addActionListener(this);
+        cmdSaida.addActionListener(this);
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        JOptionPane.showMessageDialog(
+                null,
+                "Saindo com cuidado",
+                "Saind do programa",
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        /* observação: "e" representa o evento a ser acionado */
+        if(e.getSource() == cmdEntrada){
+            // pegar o valor do textfield
+            double valor = Double.parseDouble(txtValor.getText());
+            boolean ok = caixa.depositar(valor);
+            if (ok){
+                // condição verdadeira
+                txtMsg.append("Deposito de "+valor+" feito \n"); // append é anexar, em outras palavras ele concatena e
+            } else {
+                // condição falsa
+                txtMsg.append("Valor inválido para depósito \n"); // append é anexar, em outras palavras ele concatena e
+            }
+            txtValor.setText(null);
+            txtValor.requestFocus();
+            return;
+
+        }
+        if (e.getSource() == cmdRetirada){
+            // pegar o valor do textfield
+            double valor = Double.parseDouble(txtValor.getText());
+            boolean ok = caixa.depositar(valor);
+            if (ok){
+                // condição verdadeira
+                txtMsg.append("Saque de "+valor+" feito \n"); // append é anexar, em outras palavras ele concatena e
+            } else {
+                // condição falsa
+                txtMsg.append("Saldo insuficiente para o saque \n"); // append é anexar, em outras palavras ele concatena e
+            }
+            txtValor.setText(null);
+            txtValor.requestFocus();
+            return;
+        }
+        if (e.getSource() == cmdSaldo){
+            txtSaldo.setText(Double.toString(caixa.getSaldo()));
+            return;
+        }
+        if (e.getSource() == cmdSaida){
+            windowClosing(null);
+            System.exit(0);
+        }
     }
 }
