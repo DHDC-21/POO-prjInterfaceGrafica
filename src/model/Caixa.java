@@ -1,21 +1,23 @@
 package model;
 
+import exceptions.CaixaExceptions;
+
 public class Caixa {
     // definindo atributos
     private double saldo;
-    public boolean depositar(double valor){
+    public void depositar(double valor) throws CaixaExceptions {
         if(valor>0){
             saldo+=valor;
-            return true;
+        }else {
+            throw new CaixaExceptions(1);
         }
-        return false;
     }
-    public boolean sacar(double vlaor){
+    public void sacar(double valor) throws CaixaExceptions{
         if (valor<= saldo){
             saldo-=valor;
-            return true;
+        }else {
+            throw new CaixaExceptions(2);
         }
-        return false;
     }
     public double getSaldo(){
         return saldo;

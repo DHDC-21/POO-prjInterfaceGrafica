@@ -152,35 +152,46 @@ public class CaixaView extends JFrame implements WindowListener, ActionListener 
     public void actionPerformed(ActionEvent e) {
         /* observação: "e" representa o evento a ser acionado */
         if(e.getSource() == cmdEntrada){
-            // pegar o valor do textfield
-            double valor = Double.parseDouble(txtValor.getText());
-            boolean ok = caixa.depositar(valor);
-            if (ok){
-                // condição verdadeira
-                txtMsg.append("Deposito de "+valor+" feito \n"); // append é anexar, em outras palavras ele concatena e
-            } else {
-                // condição falsa
-                txtMsg.append("Valor inválido para depósito \n"); // append é anexar, em outras palavras ele concatena e
+            // tratamento de exceção
+            try {
+                // pegar o valor do textfield
+                double valor = Double.parseDouble(txtValor.getText());
+                boolean ok = caixa.depositar(valor);
+                if (ok) {
+                    // condição verdadeira
+                    txtMsg.append("Deposito de " + valor + " feito \n"); // append é anexar, em outras palavras ele concatena e
+                } else {
+                    // condição falsa
+                    txtMsg.append("Valor inválido para depósito \n"); // append é anexar, em outras palavras ele concatena e
+                }
+                txtValor.setText(null);
+                txtValor.requestFocus();
+                return;
+            }catch (Exception ex) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Erro: "+ex.getMessage(),
+                        "Atenção!",
+                        JOptionPane.ERROR_MESSAGE
+                );
             }
-            txtValor.setText(null);
-            txtValor.requestFocus();
-            return;
-
         }
         if (e.getSource() == cmdRetirada){
-            // pegar o valor do textfield
-            double valor = Double.parseDouble(txtValor.getText());
-            boolean ok = caixa.depositar(valor);
-            if (ok){
-                // condição verdadeira
-                txtMsg.append("Saque de "+valor+" feito \n"); // append é anexar, em outras palavras ele concatena e
-            } else {
-                // condição falsa
-                txtMsg.append("Saldo insuficiente para o saque \n"); // append é anexar, em outras palavras ele concatena e
+            // tratamento de exceção
+            try {
+                // pegar o valor do textfield
+                double valor = Double.parseDouble(txtValor.getText());
+                txtMsg.append("Saque de " + valor + " feito \n"); // append é anexar, em outras palavras ele concatena e
+                txtValor.setText(null);
+                txtValor.requestFocus();
+            }catch (Exception ex) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "Erro: "+ex.getMessage(),
+                        "Atenção!",
+                        JOptionPane.ERROR_MESSAGE
+                );
             }
-            txtValor.setText(null);
-            txtValor.requestFocus();
-            return;
         }
         if (e.getSource() == cmdSaldo){
             txtSaldo.setText(Double.toString(caixa.getSaldo()));
